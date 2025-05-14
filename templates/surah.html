@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Surah{% endblock %}
+
+{% block content %}
+<!-- Your homepage content here -->
+
+<body>
+    <h1>{{ surah.englishName }} ({{ surah.name }})</h1>
+    <h2>Surah {{ surah.number }} - {{ surah.englishNameTranslation }}</h2>
+    <p>Revelation Type: {{ surah.revelationType }}</p>
+    
+    <div>
+        {% for ayah in surah.ayahs %}
+        <p>
+            <strong>Ayah {{ ayah.numberInSurah }}:</strong><br>
+            {{ ayah.text }}<br>
+            <em>{{ ayah.translation }}</em>
+        </p>
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,3 @@
+Flask
+Requests
+python-dotenv==1.0.0

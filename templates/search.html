@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Search Quran - Results for "{{ query }}"</title>{% endblock %}
+
+{% block content %}
+<body>
+    <div class="container">
+        <div class="search-container">
+            <div class="search-header">
+                <h1 class="mb-4">Search the Quran</h1>
+                
+                <form action="{{ url_for('search_quran') }}" method="get" class="row g-3">
+                    <div class="col-md-8">
+                        <input type="text" name="q" class="form-control form-control-lg" 
+                               value="{{ query }}" placeholder="Enter search term...">
+                    </div>
+                    <div class="col-md-3">
+                        <select name="surah" class="form-select form-select-lg">
+                            <option value="">All Surahs</option>
+                            {% for surah in surahs %}
+                            <option value="{{ surah.number }}" 
+                                    {% if request.args.get('surah') == str(surah.number) %}selected{% endif %}>
+                                {{ surah.number }}. {{ surah.englishName }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+                
+                {% if query %}
+                    <h2 class="mt-4">Results for "{{ query }}"</h2>
+                    {% if results %}
+                        <p class="text-muted">{{ pagination.total }} results found</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            {% if results %}
+                <div class="results-list">
+                    {% for result in results %}
+                    <div class="card result-card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title surah-info">
+                                <a href="{{ url_for('surah', surah_number=result.surah_number) }}#{{ result.ayah_number }}" 
+                                   class="text-decoration-none">
+                                    Surah {{ result.surah_number }}: {{ result.surah_name }} 
+                                    <small class="text-muted">(Ayah {{ result.ayah_number }})</small>
+                                </a>
+                            </h5>
+                            
+                            <div class="ayah-arabic">
+                                {{ result.text }}
+                            </div>
+                            
+                            <div class="card-text">
+                                {{ result.translation|replace(query, '<span class="highlight">' + query + '</span>')|safe }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if pagination.total > 20 %}
+                <nav aria-label="Search results pagination">
+                    <ul class="pagination justify-content-center">
+                        {% if pagination.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" 
+                               href="{{ url_for('search_quran', q=query, surah=request.args.get('surah', ''), offset=(pagination.current_page - 2) * 20) }}">
+                                Previous
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        {% for page in range(1, pagination.total_pages + 1) %}
+                            {% if page == pagination.current_page %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page }}</span>
+                            </li>
+                            {% else %}
+                            <li class="page-item">
+                                <a class="page-link" 
+                                   href="{{ url_for('search_quran', q=query, surah=request.args.get('surah', ''), offset=(page - 1) * 20) }}">
+                                    {{ page }}
+                                </a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if pagination.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" 
+                               href="{{ url_for('search_quran', q=query, surah=request.args.get('surah', ''), offset=pagination.current_page * 20) }}">
+                                Next
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            {% elif query and not error %}
+                <div class="alert alert-info">
+                    No results found for "{{ query }}"
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+{% endblock %}

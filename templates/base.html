@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>{% block title %}BroDeen{% endblock %}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+    
+    <!-- Font Awesome (if needed) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome-all.min.css') }}" />
+    
+    <!-- Favicon (optional) -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    
+    <!-- Additional CSS for specific pages -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                
+                <!-- Header -->
+                <header id="header">
+                    <a href="{{ url_for('home') }}" class="logo"><strong>BroDeen</strong></a>
+                    <ul class="icons">
+                        <li><a href="https://x.com/M377Gaming" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                        <li><a href="https://www.instagram.com/islam_muaz/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                        
+                    </ul>
+                </header>
+
+                <!-- Content -->
+                {% block content %}{% endblock %}
+                
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="inner">
+
+                <!-- Search -->
+                <section id="search" class="alt">
+                    <form method="post" action="#">
+                        <input type="text" name="query" id="query" placeholder="Search" />
+                    </form>
+                </section>
+
+                <!-- Menu -->
+                <nav id="menu">
+                    <header class="major">
+                        <h2>Menu</h2>
+                    </header>
+                    <ul>
+                        <li><a href="{{ url_for('home') }}">Homepage</a></li>
+                        <li><a href="{{ url_for('generic') }}">Generic</a></li>
+                        <li><a href="{{ url_for('elements') }}">Elements</a></li>
+                        <li><a href="{{ url_for('get_surah', surah_number=1) }}">Surah Al-Fatiha</a></li>
+                        <li>
+                            <span class="opener">Hadith Collections</span>
+                            <ul>
+                                <li><a href="{{ url_for('bukhari') }}">Sahih al-Bukhari</a></li>
+                                <li><a href="{{ url_for('muslim') }}">Sahih Muslim </a></li>
+                                <li><a href="{{ url_for('tirmidhi') }}">Jami At-Tirmizi</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Footer -->
+                <footer id="footer">
+                    <p class="copyright">&copy; BroDeen. All rights reserved. </p>
+                </footer>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/browser.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

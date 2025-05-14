@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}BroDeen{% endblock %}
+
+{% block content %}
+<!-- Your homepage content here -->
+<body>
+    <div class="container">
+        <h1>Quran Explorer</h1>
+        <div class="search-container">
+            <form action="/search" method="get">
+                <input type="text" name="q" class="search-input" placeholder="Search the Quran...">
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+        </div>
+        
+        <div class="surah-list">
+            {% for surah in surahs %}
+            <div class="surah-card">
+                <a href="/surah/{{ surah.number }}" style="color: black; text-decoration: none;">
+                    <div class="surah-number" style="color: black;"><b>{{ surah.number }}.</b></div>
+                    <div class="surah-name" style="color: black;">{{ surah.englishName }}</div>
+                    <div class="surah-name-arabic" style="color: black;">{{ surah.name }} (Arabic)</div>
+                    <div class="surah-details" style="color: black;">
+                        <span>{{ surah.englishNameTranslation }}:</span>
+                        <span>{{ surah.numberOfAyahs }} ayahs</span>
+                    </div>
+                    <div class="surah-details" style="color: black;">
+                        <span>{{ surah.revelationType }}</span>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+{% endblock %}
